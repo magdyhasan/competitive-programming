@@ -26,6 +26,7 @@ void solve(){
     queue< pos > q;
     q.push(mp(sx,sy));
     d[sx][sy] = 0;
+	done[sx][sy] = 255;
     while(!q.empty()){
         pos u = q.front();
         q.pop();
@@ -33,17 +34,15 @@ void solve(){
             printf("%d\n",d[u.X][u.Y]);
             return;
         }
-        if(done[u.X][u.Y])
-            continue;
-        done[u.X][u.Y] = 1;
         for (int i=0;i<8;i++){
             int di =1,nx,ny;
             while(1){
                 nx = u.X+dx[i]*di;
                 ny = u.Y+dy[i]*di;
-                if (valid(nx,ny)&&x[nx][ny]!='X'){
-                    if(d[nx][ny] >  d[u.X][u.Y]+1)
-                    d[nx][ny] = d[u.X][u.Y]+1, q.push(mp(nx,ny));
+                if (valid(nx,ny)&&x[nx][ny]!='X' && !(done[nx][ny]&(1<<i))){
+                    if(!done[nx][ny])
+					  d[nx][ny] = d[u.X][u.Y]+1, q.push(mp(nx,ny));
+					done[nx][ny] |= (1 << i);
                 }
                 else
                     break;
@@ -56,6 +55,7 @@ void solve(){
 }
 
 int main(){
+	freopen("uva.txt", "rt", stdin);
     int tc;
     scanf("%d",&tc);
     while(tc--){
