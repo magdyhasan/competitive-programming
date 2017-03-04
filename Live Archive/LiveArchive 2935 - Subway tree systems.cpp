@@ -1,3 +1,15 @@
+/*
+	for each node build a sorted list of it's children's
+	where node repesentd as ()
+	so for 
+	   1( () ( () ) )
+	  / \
+   ()2  3 ( () )
+	      \ 
+		   4()
+	by keeping children's sorted by size we easily check similarity
+*/
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<cstring>
