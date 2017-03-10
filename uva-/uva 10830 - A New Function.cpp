@@ -20,9 +20,11 @@ int main(){
 		ll ret = 0, l, r, i;
 		ll x, y, z;
 		for (i = 2; i*i < n; i++){
-			ret += (n / i - 1)*i;
+			ll cntI = (n / i - 1)*i;
+			ret += cntI;
 			l = n / (i + 1);
 			r = n / i;
+			ll t = ll(i - 1)*(sumN(r) - sumN(l));
 			if (l >= i)
 				ret += ll(i - 1)*(sumN(r) - sumN(l));
 		}

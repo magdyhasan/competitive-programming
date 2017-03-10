@@ -1,8 +1,23 @@
+/*
+	For each cell try to go to all cells in same directions
+	for each cell mark in vis[] if you visited this cell before from what direction so if you came from another direction with same cost as an eariler direction, you sitll try this direction
+	Like in this case: 
+	  012345
+	0 F.....
+	1 .XXXX.
+	2 XX....
+	3 S..XX.
+	4 ......
+	if you reached (2,5) from (2,3) you mark it visited by cost 2 from direction right
+	But optimal is from (4,4) with direction up ( if you didn't save direction when you reach it from (4,4) and not check which direction you reached it from, you would skip this direction)
+*/
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<queue>
 #include<utility>
 using namespace std;
+
 
 typedef pair<int,int> pos;
 #define mp(a,b) make_pair(a,b)
