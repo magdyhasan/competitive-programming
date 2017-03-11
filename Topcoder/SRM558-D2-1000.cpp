@@ -1,3 +1,14 @@
+/*
+	-Solutoin of grundy with dp of bitmasking get TLE
+
+	-This game can be modeled as a nim game 
+	Where each pile size is the ditance from a black cell to another black one ( or end of tiles )
+	As you can pick one black cell and go left as long as adjacent to left is white
+
+	We can ignore moving right, because you can just play it from right one moving left
+*/
+
+
 #include <vector>
 #include <list>
 #include <map>
@@ -67,8 +78,8 @@ string CatAndRabbit::getWinner(string tiles) {
 	for (int i = 0; i < n; i++) if (tiles[i] == '#') {
 		for (int j = i + 1; j < (n - !i); j++)
 			if (tiles[j] == '#'){
-			xorSum ^= j - i - 1;
-			break;
+				xorSum ^= j - i - 1;
+				break;
 			}
 	}
 	return xorSum ? "Cat" : "Rabbit";

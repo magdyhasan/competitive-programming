@@ -1,3 +1,14 @@
+/*
+	to check if valid tree:
+	first check symmetry of all nodes and that all nodes distance must be postitive
+	get all edges from the matrix and build a spanning tree with kruskal algorithm
+	after building tree, calculate all nodes to nodes distance ( O(n^2) by BFS/DFS, O(nlogn) by using LCA )
+	then just check if this tree distance match the given ones
+
+	We can prove this tree we built must be same one if exist in matrix because we used all distances on it.
+*/
+
+
 #include <bits/stdc++.h>
 #include <unordered_map>
 #include <unordered_set>

@@ -1,3 +1,14 @@
+/*
+	We know phi(a*b*c) =  phi(a)*phi(b)*phi(c)
+	also phi(p^k) = p^k-1 * (p-1)	where p is a prime number and k > 0
+
+	each number can be repesneted as some primes p1^q1 p2^q2 ..
+	so run sive and for each prime(p) go to all it's muiltple(q) ( i.e numbers that will have p in it's prime factorization)
+	calculate k where p^k <= q
+	Multiply phi(q) by (p^k-1 * (p-1))
+
+	Use suffix sum of all phi's to avoid TLE
+*/
 #include<bits/stdc++.h>
 using namespace std;
 

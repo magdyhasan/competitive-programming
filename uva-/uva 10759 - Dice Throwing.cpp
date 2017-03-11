@@ -1,3 +1,10 @@
+/*
+	Let dp[i][j] repesent number of ways to rech sum j after i throws
+	dp[i][j] = dp[i-1][j-d] where d where 1<=d<=6 ( the value we got in the i-th throw )
+	to get probability fraction it's dp[n][j]/6^n for all j>=x
+	get GCD(s(dp[n][j], j>=x),6^n) to be improper fraction
+*/
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<cstring>

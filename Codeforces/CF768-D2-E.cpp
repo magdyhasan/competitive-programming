@@ -1,3 +1,10 @@
+/*
+
+	straightforward by using grundy 
+	for each pile keep a bitmask of all moves already made on this pile, and try ones you that's not tried yet
+	Just xor all grundy of all piles
+*/
+
 #include <bits/stdc++.h>
 #include <unordered_map>
 #include <unordered_set>

@@ -1,3 +1,11 @@
+/*
+	Keep a segment tree with all each person has value 1
+	Each node of the tree has Sum of it's children
+	so now when we look for Kth person we know it has to have K-1 sum before it, we can query the tree
+	after we finish this person remove it from the tree
+
+*/
+
 #include <vector>
 #include <list>
 #include <map>

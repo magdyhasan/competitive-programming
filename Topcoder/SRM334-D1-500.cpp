@@ -1,3 +1,12 @@
+
+/*
+	We can see uppbound is around 3000,000 because max value 999,999 give us 9^6*6 = 3188646
+	so we can memorize for each vale minimum value of the cycle he will make
+	
+	So for each value start with it till you encounter a repeated elements, and memroize minimum value for all elemetns in this cycle
+
+*/
+
 #include <vector>
 #include <list>
 #include <map>
