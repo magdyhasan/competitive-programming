@@ -1,3 +1,14 @@
+/*
+	Notice for each point we can calcualte distance of x's and y's for others points seperatly
+	to get distance from this point x to all other points x's use this BIT techinque: https://drive.google.com/open?id=0BzgibPXBVUzjcHRHVzA0TVVXQ0U
+	and do same for y
+
+	This problem can be also solved by sorting all x's and y's and for all x calculae distance to all others x and same for y
+	and with this preprocessing
+	just iterate through each point and add sum of x's and y's
+*/
+
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<cstring>
