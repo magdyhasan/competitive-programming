@@ -1,3 +1,7 @@
+/*
+	Idea: https://drive.google.com/open?id=0BzgibPXBVUzjTEdhV2tURHNlbkk
+*/
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<cstring>
