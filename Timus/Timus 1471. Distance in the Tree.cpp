@@ -81,7 +81,7 @@ int main(){
 		u = q.front(); q.pop();
 		for (auto ad : adj[u])
 			if (d[ad.first] == -1)
-				d[ad.first] = d[u] + ad.second;
+				d[ad.first] = d[u] + ad.second, q.push(ad.first);
 	}
 	lca_init();
 	int m; scanf("%d", &m);
