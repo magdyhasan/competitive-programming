@@ -6,30 +6,27 @@
 #include<algorithm>
 using namespace std;
 
-string cur;
-char st[10000];
-string pa;
-int n, nways;
+typedef long long ll;
+const ll mod = 1e9;
 
-void rec(int lvl,char p, int idx){
-	if (lvl == 0 && cur.size() == n){
-		if (cur == pa) nways++;
-		return;
-	}
-	cur += st[idx];
-	if (p != '#' && st[idx + 1] == p){
-		rec(lvl-1,)
-	}
+ll dp[305][305];
+char st[305];
+
+ll rec(int i, int j){
+	if (i+1 == j) return 1;
+	ll &ret = dp[i][j];
+	if (ret != -1) return ret;
+	ret = 0;
+	for (int it = i + 1; it < j; it++) if (st[i] == st[it])
+		ret = (ret + rec(i + 1, it)*rec(it, j)) % mod;
+	return ret;
 }
+
 
 int main(){
     freopen("uva.txt","rt",stdin);
-	while (scanf("%s", st) != EOF){
-		nways = 0;
-		n = strlen(st);
-		pa = st;
-		rec(0);
-		printf("%d\n", nways);
+	while (scanf("%s", st) == 1){
+		memset(dp, -1, sizeof(dp));
+		printf("%lld\n", rec(0, strlen(st)));
 	}
 }
-
