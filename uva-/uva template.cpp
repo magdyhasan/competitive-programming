@@ -1,9 +1,4 @@
-#include<stdlib.h>
-#include<stdio.h>
-#include<cstring>
-#include<string>
-#include<vector>
-#include<algorithm>
+#include<bits/stdc++.h>
 using namespace std;
 
 int main(){
