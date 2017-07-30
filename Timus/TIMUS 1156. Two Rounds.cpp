@@ -1,3 +1,10 @@
+/*
+	for each component run bipartite test
+	now you have number of components
+	you can assign one component to first team and the other compnent to the second team
+	and check if it's possible to have n for each team
+	which is just knap-sack 
+*/
 #include<bits/stdc++.h>
 using namespace std;
 
