@@ -1,3 +1,18 @@
+/*
+				       | 0 | n-1 |
+	let trans matrix = | 1 | n-2 |
+		
+					   | a[i] | (s-a[i]) |
+	and init matrix =  | 0    |  0       |
+	where s is sum of all a[i], so init[0][0] is current number, init[0][1] is sum of other terms except this one
+
+                   | a[i] | (s-a[i]) | * | 0 | n-1 |   = | (s-a[i]) | a[i]*(n-1)+(s-a[i])*(n-2) |
+	init * trans = | 0    |  0       |   | 1 | n-2 |     |   0      |     0                     |
+
+	firt term(s-a[i]) is just a[i] after 1 round by rules
+	second term, you can notice that in new sum we will add a[i] (n-1) times, and other terms will be added (n-2),
+	play with sample to get sense of that
+*/
 #include<stdlib.h>
 #include<stdio.h>
 #include<cstring>
