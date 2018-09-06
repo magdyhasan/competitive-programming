@@ -1,3 +1,10 @@
+/*
+	frst lets build graph of given array
+	straightforward to check cycle using floyd
+	if a node is in cycle and have outdegree bigger than 1 it means there's a cycle that can always grow bigger so just return -1
+	else notice that we almost make n steps of simulations and after that either number of pigons grow or stays same
+	so just simulate for n moves
+*/
 #include <bits/stdc++.h>
 using namespace std;
 
