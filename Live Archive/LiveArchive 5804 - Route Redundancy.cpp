@@ -1,131 +1,66 @@
 /*
-problem is just asking for maximum flow / maximum edge on paths of max flow
+problem is just asking for total flow / maximum flow of one path
 
-if at first we found path that maximize  minimum edge on path, with modified bellman, then minimum edge on this path
-will be our max edge on path of max flow
+if at first we found path that maximize  minimum edge on path(maximum flow of path),
+with modified dijkstra, then minimum edge on this path
+will be our maximum flow of one path
 
-so just run max flow with modified bellman to find max edge on path
+so just run max flow with modified dijkstra to find max flow on path on first run
 */
-#include<set>
-#include<map>
-#include<iomanip>
-#include<cmath>
-#include<string>
-#include<vector>
-#include<queue>
-#include<stack>
-#include<numeric>
-#include<sstream>
-#include<iostream>
-#include<algorithm>
+#include<bits/stdc++.h>
+#include<functional> // for greater sort
 using namespace std;
 
-#define all(v)				((v).begin()), ((v).end())
-#define sz(v)				((int)((v).size()))
-#define clr(v, d)			memset(v, d, sizeof(v))
-#define repit(i, c)       	for(it(c) i = (c).begin(); i != (c).end(); ++i)
-#define repi(i, j, n) 		for(int i=(j);i<(int)(n);++i)
-#define repd(i, j, n) 		for(int i=(j);i>=(int)(n);--i)
-#define repa(v)				repi(i, 0, sz(v)) repi(j, 0, sz(v[i]))
-#define rep(i, v)			repi(i, 0, sz(v))
-#define lp(i, cnt)			repi(i, 0, cnt)
-#define lpi(i, s, cnt)		repi(i, s, cnt)
-#define P(x)				cout<<#x<<" = { "<<x<<" }\n"
-#define pb					push_back
+typedef pair<int, int> node;
 
-typedef vector<int>       vi;
-typedef vector<double>    vd;
-typedef vector<string>    vs;
-typedef long long         ll;
-typedef long double   	  ld;
+const int maxn = 300500;
 
-const int OO = (int)1e8;	// Note, IF Small may be WRONG, Large may generate OVERFLOW
+int vis[maxn];
+int prv[maxn];
+int cap[1005][1005];
+int co[1005][1005];
 
-struct edge {
-	int from, to, w;
+vector<int> adj[maxn];
 
-	edge(int from, int to, int w) : from(from), to(to), w(w) {}
-
-	bool operator < (const edge & e) const {
-		return w > e.w;	// STL priority_queue need it > , or modify data -ve, or use paprmeter less
-	}
-};
-
-bool BellmanPrcoessing(vector<edge> & edgeList, int n, vi &dist, vi &prev, vi &pos) {
-	if (sz(edgeList) == 0)	return false;
-	for (int it = 0, r = 0; it < n + 1; ++it, r = 0) {
-		for (int j = 0; j < sz(edgeList); ++j) {
-			edge ne = edgeList[j];
-			if (dist[ne.from] >= OO || ne.w >= OO)	continue;
-			// find minimum edge on path
-			if (dist[ne.to] > max(dist[ne.from], ne.w)) {
-				dist[ne.to] = max(dist[ne.from], ne.w);
-				prev[ne.to] = ne.from, pos[ne.to] = j, r++;
-				if (it == n)		return true;
+int dijskstra(int S, int T){
+	memset(vis, 0, sizeof(vis));
+	memset(prv, -1, sizeof(prv));
+	priority_queue<node, vector<node>, less<node> > pq;
+	pq.push(node(10500, S));
+	while (pq.empty() == false) {
+		node u = pq.top();
+		pq.pop();
+		if (u.second == T)	return u.first;
+		if (vis[u.second])	continue;
+		vis[u.second] = 1;
+		for (int v : adj[u.second])
+			if (vis[v] == false && cap[u.second][v] > 0){
+			pq.push(node{ min(cap[u.second][v], u.first), v });
+			prv[v] = u.second;
 			}
-		}
-		if (!r)	break;
 	}
-	return false;
-}
-vi buildPath(vi prev, int src) {
-	vi path;	// make sure to test case self edge. E.g. 2 --> 2
-	for (int i = src; i > -1 && sz(path) <= sz(prev); i = prev[i])
-		path.push_back(i);
-	reverse(all(path));
-	return path;
+	return 0;
 }
 
-pair<vi, vi> BellmanFord(vector<edge> & edgeList, int n, int src, int dest)	// O(NE)
-{
-	vi dist(n, OO), prev(n, -1), reachCycle(n), path, pos(n);	// To use pos: edgeList[pos[path[i]]].w
-	dist[src] = -OO;
-
-	bool cycle = BellmanPrcoessing(edgeList, n, dist, prev, pos);
-
-	if (cycle) {
-		vi odist = dist;
-		BellmanPrcoessing(edgeList, n, dist, prev, pos);
-		for (int i = 0; i < n; ++i)	// find all nodes that AFFECTED by negative cycle
-			reachCycle[i] = (odist[i] != dist[i]);
+pair<int, int> maxFlow(int src, int sink){
+	int total_flow = 0, maxEdge = 0;
+	while (true)
+	{
+		int newflow = dijskstra(src, sink);
+		if (!newflow) break;	// once no more paths, STOP
+		int t = sink;
+		while (prv[t] != -1){
+			int a = prv[t], b = t;
+			cap[a][b] -= newflow;
+			cap[b][a] += newflow;
+			t = prv[t];
+		}
+		if (total_flow == 0){
+			maxEdge = newflow;
+		}
+		total_flow += newflow;
 	}
-	else
-		path = buildPath(prev, dest);
-
-	return make_pair(dist, path);
-}
-
-
-// Set cost & cap arr to ZERO
-// Make sure that for each cost[i][j] += c there exist cost[j][i] -= c and cap[i][j] += flow
-// lp(i, r)	cap[0][i+1]=1;	lp(j, c) cap[j+r+1][r+c+1]=1;	lp() cap[i+1][j+r+1] = 1
-// MaxCostMaxFlow can be obtained by multiplying cost matrix(initially zeros) by -1.
-// The algo will not work if there is negative cycle reachble on road from src to dest [not tested]
-pair<int, int> mcmf(vector< vi > capMax, vector< vi > tcapMax, vector< vector<int> > & costMax, int src, int dest)
-{
-	int maxFlow = 0, maxEdge = 0;
-	while (true) {
-		vector<edge> edgeList;
-		repa(capMax) if (capMax[i][j] > 0) edgeList.push_back(edge(i, j, -costMax[i][j]));
-		printf("");
-		pair<vi, vi> p = BellmanFord(edgeList, sz(capMax), src, dest);
-		if (p.first[dest] <= -OO || p.first[dest] >= +OO)	break;
-
-		int bottleNeck = OO;
-		lp(i, sz(p.second) - 1) {
-			int f = p.second[i], t = p.second[i + 1];
-			bottleNeck = min(bottleNeck, capMax[f][t]);
-		}
-		lp(i, sz(p.second) - 1) {
-			int f = p.second[i], t = p.second[i + 1];
-			capMax[f][t] -= bottleNeck, capMax[t][f] += bottleNeck;
-		}
-		if (maxFlow == 0){// if this first maxflow path, then this max edge 
-			maxEdge = bottleNeck;
-		}
-		maxFlow += bottleNeck;
-	}
-	return make_pair(maxFlow, maxEdge);
+	return{ total_flow, maxEdge };
 }
 
 int main(){
@@ -134,16 +69,13 @@ int main(){
 		int n, m, A, B;
 		int da;
 		scanf("%d%d%d%d%d", &da, &n, &m, &A, &B);
-		vector< vi > capMax(n, vi(n, 0)), tcapMax(n, vi(n, 0));
-		vector< vector<int> > costMax(n, vi(n, 0));
 		for (int i = 0; i < m; i++){
 			int u, v, c;
 			scanf("%d%d%d", &u, &v, &c);
-			capMax[u][v] = c;
-			tcapMax[u][v] = c;
-			costMax[u][v] = c;
+			cap[u][v] = co[u][v] = c;
+			adj[u].push_back(v);
 		}
-		auto ret = mcmf(capMax, tcapMax, costMax, A, B);
+		auto ret = maxFlow(A, B);
 		printf("%d %.3lf\n", da, (ret.first*1.) / double(ret.second));
 	}
 }
